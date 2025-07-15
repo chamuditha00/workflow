@@ -1,0 +1,51 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: university-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: university_db
+      MYSQL_USER: university_user
+      MYSQL_PASSWORD: university_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql/init:/docker-entrypoint-initdb.d
+    command: --default-authentication-plugin=mysql_native_password
+    networks:
+      - university-network
+
+  backend:
+    build: ./backend
+    container_name: university-backend
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/university_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: university_user
+      SPRING_DATASOURCE_PASSWORD: university_password
+    networks:
+      - university-network
+
+  frontend:
+    build: ./frontend
+    container_name: university-frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend
+    networks:
+      - university-network
+
+volumes:
+  mysql_data:
+
+networks:
+  university-network:
+    driver: bridge 

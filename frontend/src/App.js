@@ -7,6 +7,7 @@ import StudentForm from './components/Students/StudentForm';
 import CourseList from './components/Courses/CourseList';
 import CourseForm from './components/Courses/CourseForm';
 import EnrollmentList from './components/Enrollments/EnrollmentList';
+import EnrollmentForm from './components/Enrollments/EnrollmentForm';
 import StudentProfile from './components/Students/StudentProfile';
 import CourseDetails from './components/Courses/CourseDetails';
 import './App.css';
@@ -26,6 +27,7 @@ function App() {
           <Route path="/courses/:id/edit" element={<CourseForm />} />
           <Route path="/courses/:id" element={<CourseDetails />} />
           <Route path="/enrollments" element={<EnrollmentList />} />
+          <Route path="/enrollments/new" element={<EnrollmentForm />} />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </Layout>
