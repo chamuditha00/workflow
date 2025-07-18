@@ -135,41 +135,52 @@ const CourseForm = () => {
   }
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-4xl mx-auto space-y-8">
       {/* Header */}
-      <div className="flex items-center mb-6">
+      <div className="flex items-center animate-fade-in-up">
         <button
           onClick={() => navigate('/courses')}
-          className="btn btn-secondary mr-4"
+          className="btn btn-secondary mr-6"
         >
-          <ArrowLeft className="h-4 w-4" />
+          <ArrowLeft className="h-5 w-5" />
         </button>
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-4xl font-bold gradient-text mb-2">
             {isEditing ? 'Edit Course' : 'Add New Course'}
           </h1>
-          <p className="mt-2 text-gray-600">
+          <p className="text-text-secondary text-lg">
             {isEditing ? 'Update course information' : 'Create a new course'}
           </p>
         </div>
       </div>
 
       {/* Form */}
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-8">
         {errors.general && (
-          <div className="bg-red-50 border border-red-200 rounded-lg p-4">
-            <p className="text-red-600">{errors.general}</p>
+          <div className="card animate-fade-in-up">
+            <div className="p-6 bg-gradient-to-r from-red-500/10 to-red-600/10 border-l-4 border-red-500">
+              <div className="flex items-center">
+                <div className="flex-shrink-0">
+                  <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                  </svg>
+                </div>
+                <div className="ml-3">
+                  <p className="text-red-300">{errors.general}</p>
+                </div>
+              </div>
+            </div>
           </div>
         )}
 
-        <div className="card">
-          <div className="p-6">
-            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center">
-              <BookOpen className="h-5 w-5 mr-2" />
+        <div className="card animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+          <div className="p-8">
+            <h2 className="text-xl font-bold text-text-primary mb-8 flex items-center">
+              <BookOpen className="h-6 w-6 mr-3 text-accent" />
               Course Information
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="form-group">
                 <label htmlFor="courseName" className="form-label">Course Name *</label>
                 <input
@@ -182,49 +193,52 @@ const CourseForm = () => {
                   placeholder="Enter course name"
                 />
                 {errors.courseName && (
-                  <p className="text-red-500 text-sm mt-1">{errors.courseName}</p>
+                  <p className="text-red-400 text-sm mt-2">{errors.courseName}</p>
                 )}
               </div>
 
               <div className="form-group">
-                <label htmlFor="courseCode" className="form-label">Course Code *</label>
-                <div className="relative">
-                  <Hash className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                  <input
-                    type="text"
-                    id="courseCode"
-                    name="courseCode"
-                    value={formData.courseCode}
-                    onChange={handleChange}
-                    className={`input pl-10 ${errors.courseCode ? 'border-red-500' : ''}`}
-                    placeholder="e.g., CS101"
-                  />
-                </div>
+                <label htmlFor="courseCode" className="form-label flex items-center">
+                  <Hash className="h-4 w-4 mr-2 text-accent" />
+                  Course Code *
+                </label>
+                <input
+                  type="text"
+                  id="courseCode"
+                  name="courseCode"
+                  value={formData.courseCode}
+                  onChange={handleChange}
+                  className={`input ${errors.courseCode ? 'border-red-500' : ''}`}
+                  placeholder="e.g., CS101"
+                />
                 {errors.courseCode && (
-                  <p className="text-red-500 text-sm mt-1">{errors.courseCode}</p>
+                  <p className="text-red-400 text-sm mt-2">{errors.courseCode}</p>
                 )}
               </div>
             </div>
 
             <div className="form-group">
-              <label htmlFor="description" className="form-label">Description</label>
-              <div className="relative">
-                <FileText className="absolute left-3 top-3 text-gray-400 h-4 w-4" />
-                <textarea
-                  id="description"
-                  name="description"
-                  value={formData.description}
-                  onChange={handleChange}
-                  rows="4"
-                  className="input pl-10 resize-none"
-                  placeholder="Enter course description"
-                />
-              </div>
+              <label htmlFor="description" className="form-label flex items-center">
+                <FileText className="h-4 w-4 mr-2 text-accent" />
+                Description
+              </label>
+              <textarea
+                id="description"
+                name="description"
+                value={formData.description}
+                onChange={handleChange}
+                rows="4"
+                className="input resize-none"
+                placeholder="Enter course description"
+              />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="form-group">
-                <label htmlFor="credits" className="form-label">Credits</label>
+                <label htmlFor="credits" className="form-label flex items-center">
+                  <Clock className="h-4 w-4 mr-2 text-accent" />
+                  Credits
+                </label>
                 <input
                   type="number"
                   id="credits"
@@ -236,7 +250,7 @@ const CourseForm = () => {
                   min="0"
                 />
                 {errors.credits && (
-                  <p className="text-red-500 text-sm mt-1">{errors.credits}</p>
+                  <p className="text-red-400 text-sm mt-2">{errors.credits}</p>
                 )}
               </div>
 
@@ -252,7 +266,7 @@ const CourseForm = () => {
                   placeholder="Enter instructor name"
                 />
                 {errors.instructor && (
-                  <p className="text-red-500 text-sm mt-1">{errors.instructor}</p>
+                  <p className="text-red-400 text-sm mt-2">{errors.instructor}</p>
                 )}
               </div>
 
@@ -269,12 +283,12 @@ const CourseForm = () => {
                   min="0"
                 />
                 {errors.maxStudents && (
-                  <p className="text-red-500 text-sm mt-1">{errors.maxStudents}</p>
+                  <p className="text-red-400 text-sm mt-2">{errors.maxStudents}</p>
                 )}
               </div>
             </div>
-            {/* Status Dropdown */}
-            <div className="form-group mt-4">
+
+            <div className="form-group">
               <label htmlFor="status" className="form-label">Status</label>
               <select
                 id="status"
@@ -291,7 +305,7 @@ const CourseForm = () => {
         </div>
 
         {/* Form Actions */}
-        <div className="flex justify-end space-x-3">
+        <div className="flex justify-end space-x-4 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
           <button
             type="button"
             onClick={() => navigate('/courses')}
@@ -302,14 +316,14 @@ const CourseForm = () => {
           <button
             type="submit"
             disabled={loading}
-            className="btn btn-primary"
+            className="btn btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {loading ? (
-              <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+              <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
             ) : (
-              <Save className="h-4 w-4" />
+              <Save className="h-5 w-5" />
             )}
-            {isEditing ? 'Update Course' : 'Create Course'}
+            {loading ? (isEditing ? 'Updating...' : 'Creating...') : (isEditing ? 'Update Course' : 'Create Course')}
           </button>
         </div>
       </form>

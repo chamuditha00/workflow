@@ -7,8 +7,7 @@ import {
   Plus,
   Eye,
   ArrowRight,
-  Calendar,
-  Award
+  Calendar
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { getAllStudents, getAllCourses } from '../services/api';
@@ -18,7 +17,6 @@ const Dashboard = () => {
     students: 0,
     courses: 0,
     enrollments: 0,
-    avgGrade: 0
   });
   const [loading, setLoading] = useState(true);
   const [recentStudents, setRecentStudents] = useState([]);
@@ -39,7 +37,6 @@ const Dashboard = () => {
           students: students.length,
           courses: courses.length,
           enrollments: students.reduce((acc, student) => acc + (student.enrollments?.length || 0), 0),
-          avgGrade: 85.5 // Mock average grade
         });
 
         setRecentStudents(students.slice(0, 5));
@@ -56,17 +53,17 @@ const Dashboard = () => {
 
   const StatCard = ({ title, value, icon: Icon, color, href }) => {
     const content = (
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-200">
-        <div className="flex items-center">
-          <div className={`p-3 rounded-lg ${color} shadow-sm`}>
-            <Icon className="h-6 w-6 text-white" />
+      <div className="card hover-lift animate-fade-in-up">
+        <div className="flex items-center p-6">
+          <div className={`p-3 rounded-xl ${color} shadow-lg`}>
+            <Icon className="h-7 w-7 text-white" />
           </div>
-          <div className="ml-4 flex-1">
-            <p className="text-sm font-medium text-gray-600">{title}</p>
-            <p className="text-2xl font-bold text-gray-900">{value}</p>
+          <div className="ml-5 flex-1">
+            <p className="text-sm font-semibold text-text-muted uppercase tracking-wide">{title}</p>
+            <p className="text-3xl font-bold text-text-primary mt-1">{value}</p>
           </div>
           {href && (
-            <ArrowRight className="h-4 w-4 text-gray-400" />
+            <ArrowRight className="h-5 w-5 text-text-muted group-hover:text-primary transition-colors" />
           )}
         </div>
       </div>
@@ -81,46 +78,46 @@ const Dashboard = () => {
 
   const QuickActionCard = ({ title, description, icon: Icon, href, color }) => (
     <Link to={href} className="block group">
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-200 hover:-translate-y-1">
-        <div className={`p-3 rounded-lg ${color} w-fit mb-4 shadow-sm`}>
-          <Icon className="h-6 w-6 text-white" />
+      <div className="card hover-lift animate-fade-in-up p-6">
+        <div className={`p-4 rounded-xl ${color} w-fit mb-4 shadow-lg animate-glow`}>
+          <Icon className="h-7 w-7 text-white" />
         </div>
-        <h3 className="text-lg font-semibold text-gray-900 mb-2">{title}</h3>
-        <p className="text-gray-600 text-sm">{description}</p>
+        <h3 className="text-xl font-bold text-text-primary mb-3 gradient-text">{title}</h3>
+        <p className="text-text-secondary">{description}</p>
       </div>
     </Link>
   );
 
   const RecentItem = ({ item, type, href }) => (
-    <div className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-colors">
-      <div className="flex items-center space-x-3">
-        <div className={`h-8 w-8 rounded-full flex items-center justify-center ${
-          type === 'student' ? 'bg-blue-100' : 'bg-green-100'
-        }`}>
+    <div className="flex items-center justify-between p-4 hover:bg-dark-tertiary rounded-xl transition-all duration-200 border border-transparent hover:border-gray-600">
+      <div className="flex items-center space-x-4">
+        <div className={`h-10 w-10 rounded-xl flex items-center justify-center ${
+          type === 'student' ? 'bg-gradient-to-r from-primary to-primary-light' : 'bg-gradient-to-r from-secondary to-accent'
+        } shadow-lg`}>
           {type === 'student' ? (
-            <Users className="h-4 w-4 text-blue-600" />
+            <Users className="h-5 w-5 text-white" />
           ) : (
-            <BookOpen className="h-4 w-4 text-green-600" />
+            <BookOpen className="h-5 w-5 text-white" />
           )}
         </div>
         <div>
-          <p className="font-medium text-gray-900 text-sm">
+          <p className="font-semibold text-text-primary">
             {type === 'student' 
               ? `${item.firstName} ${item.lastName}`
               : item.courseName
             }
           </p>
-          <p className="text-xs text-gray-500">
+          <p className="text-sm text-text-muted">
             {type === 'student' ? item.email : item.courseCode}
           </p>
         </div>
       </div>
       <Link
         to={href}
-        className="text-primary hover:text-primary-dark text-xs font-medium flex items-center space-x-1"
+        className="btn btn-secondary btn-sm flex items-center space-x-2"
       >
         <span>View</span>
-        <Eye className="h-3 w-3" />
+        <Eye className="h-4 w-4" />
       </Link>
     </div>
   );
@@ -128,7 +125,7 @@ const Dashboard = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-primary shadow-lg"></div>
       </div>
     );
   }
@@ -136,9 +133,9 @@ const Dashboard = () => {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
-        <p className="mt-2 text-gray-600">Welcome to the Course Management System</p>
+      <div className="animate-fade-in-up">
+        <h1 className="text-4xl font-bold gradient-text mb-2">Dashboard</h1>
+        <p className="text-text-secondary text-lg">Welcome to CourseFlow Management System</p>
       </div>
 
       {/* Stats Grid */}
@@ -147,73 +144,72 @@ const Dashboard = () => {
           title="Total Students"
           value={stats.students}
           icon={Users}
-          color="bg-blue-500"
+          color="bg-gradient-to-r from-primary to-primary-light"
           href="/students"
         />
         <StatCard
           title="Total Courses"
           value={stats.courses}
           icon={BookOpen}
-          color="bg-green-500"
+          color="bg-gradient-to-r from-secondary to-accent"
           href="/courses"
         />
         <StatCard
           title="Total Enrollments"
           value={stats.enrollments}
           icon={GraduationCap}
-          color="bg-purple-500"
+          color="bg-gradient-to-r from-accent to-accent-dark"
           href="/enrollments"
         />
-
       </div>
 
       {/* Quick Actions */}
-      <div>
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
+      <div className="animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+        <h2 className="text-2xl font-bold gradient-text-accent mb-6">Quick Actions</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <QuickActionCard
             title="Add New Student"
             description="Register a new student in the system"
             icon={Plus}
             href="/students/new"
-            color="bg-blue-500"
+            color="bg-gradient-to-r from-primary to-primary-light"
           />
           <QuickActionCard
             title="Create New Course"
             description="Add a new course to the curriculum"
             icon={BookOpen}
             href="/courses/new"
-            color="bg-green-500"
+            color="bg-gradient-to-r from-secondary to-accent"
           />
           <QuickActionCard
             title="View Enrollments"
             description="Manage student course enrollments"
             icon={Eye}
             href="/enrollments"
-            color="bg-purple-500"
+            color="bg-gradient-to-r from-accent to-accent-dark"
           />
         </div>
       </div>
 
       {/* Recent Activity */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
         {/* Recent Students */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-          <div className="px-6 py-4 border-b border-gray-200">
+        <div className="card">
+          <div className="px-6 py-5 border-b border-gray-600">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-gray-900">Recent Students</h3>
+              <h3 className="text-xl font-bold gradient-text">Recent Students</h3>
               <Link
                 to="/students"
-                className="text-primary hover:text-primary-dark text-sm font-medium flex items-center space-x-1"
+                className="btn btn-secondary btn-sm flex items-center space-x-2"
               >
                 <span>View all</span>
-                <ArrowRight className="h-3 w-3" />
+                <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           </div>
-          <div className="p-4">
+          <div className="p-6">
             {recentStudents.length > 0 ? (
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {recentStudents.map((student) => (
                   <RecentItem
                     key={student.id}
@@ -224,31 +220,31 @@ const Dashboard = () => {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-8">
-                <Users className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                <p className="text-gray-500 text-sm">No students found</p>
+              <div className="text-center py-12">
+                <Users className="h-12 w-12 text-text-muted mx-auto mb-4" />
+                <p className="text-text-muted">No students found</p>
               </div>
             )}
           </div>
         </div>
 
         {/* Recent Courses */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
-          <div className="px-6 py-4 border-b border-gray-200">
+        <div className="card">
+          <div className="px-6 py-5 border-b border-gray-600">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-gray-900">Recent Courses</h3>
+              <h3 className="text-xl font-bold gradient-text">Recent Courses</h3>
               <Link
                 to="/courses"
-                className="text-primary hover:text-primary-dark text-sm font-medium flex items-center space-x-1"
+                className="btn btn-secondary btn-sm flex items-center space-x-2"
               >
                 <span>View all</span>
-                <ArrowRight className="h-3 w-3" />
+                <ArrowRight className="h-4 w-4" />
               </Link>
             </div>
           </div>
-          <div className="p-4">
+          <div className="p-6">
             {recentCourses.length > 0 ? (
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {recentCourses.map((course) => (
                   <RecentItem
                     key={course.id}
@@ -259,9 +255,9 @@ const Dashboard = () => {
                 ))}
               </div>
             ) : (
-              <div className="text-center py-8">
-                <BookOpen className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                <p className="text-gray-500 text-sm">No courses found</p>
+              <div className="text-center py-12">
+                <BookOpen className="h-12 w-12 text-text-muted mx-auto mb-4" />
+                <p className="text-text-muted">No courses found</p>
               </div>
             )}
           </div>

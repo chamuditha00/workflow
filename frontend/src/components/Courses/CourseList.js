@@ -100,65 +100,84 @@ const CourseList = () => {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-primary shadow-lg"></div>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
+      {/* Success/Error Messages */}
+      {successMessage && (
+        <div className="glass-light border border-secondary rounded-xl p-4 animate-fade-in-up">
+          <div className="flex items-center space-x-3">
+            <CheckCircle className="h-5 w-5 text-secondary" />
+            <span className="text-text-primary font-medium">{successMessage}</span>
+          </div>
+        </div>
+      )}
+      
+      {errorMessage && (
+        <div className="glass-light border border-red-500 rounded-xl p-4 animate-fade-in-up">
+          <div className="flex items-center space-x-3">
+            <AlertCircle className="h-5 w-5 text-red-500" />
+            <span className="text-text-primary font-medium">{errorMessage}</span>
+          </div>
+        </div>
+      )}
+
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between animate-fade-in-up">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Courses</h1>
-          <p className="mt-2 text-gray-600">Manage course information and enrollments</p>
+          <h1 className="text-4xl font-bold gradient-text mb-2">Courses</h1>
+          <p className="text-text-secondary text-lg">Manage course information and enrollments</p>
         </div>
         <Link
           to="/courses/new"
-          className="btn btn-primary mt-4 sm:mt-0"
+          className="btn btn-primary mt-6 sm:mt-0"
         >
-          <Plus className="h-4 w-4" />
+          <Plus className="h-5 w-5" />
           Add Course
         </Link>
       </div>
 
       {/* Search */}
-      <div className="relative">
-        <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+      <div className="relative animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+        <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-text-muted h-5 w-5" />
         <input
           type="text"
           placeholder="Search courses..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          className="input pl-10"
+          className="input pl-12"
         />
       </div>
 
       {/* Courses Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-        {filteredCourses.map((course) => (
-          <div key={course.id} className="card hover:shadow-lg transition-shadow">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+        {filteredCourses.map((course, index) => (
+          <div key={course.id} className="card hover-lift" style={{ animationDelay: `${0.3 + index * 0.1}s` }}>
             <div className="p-6">
-              <div className="flex items-start justify-between mb-4">
+              <div className="flex items-start justify-between mb-6">
                 <div className="flex-1">
-                  <div className="flex items-center space-x-3 mb-2">
-                    <div className="h-10 w-10 rounded-full bg-green-100 flex items-center justify-center">
-                      <BookOpen className="h-5 w-5 text-green-600" />
+                  <div className="flex items-center space-x-4 mb-3">
+                    <div className="h-12 w-12 rounded-xl bg-gradient-to-r from-secondary to-accent flex items-center justify-center shadow-lg">
+                      <BookOpen className="h-6 w-6 text-white" />
                     </div>
                     <div>
-                      <h3 className="text-lg font-semibold text-gray-900">
+                      <h3 className="text-xl font-bold text-text-primary">
                         {course.courseName}
                       </h3>
-                      <p className="text-sm text-gray-500">Code: {course.courseCode}</p>
+                      <p className="text-sm text-text-muted">Code: {course.courseCode}</p>
                     </div>
                   </div>
                   {course.description && (
-                    <p className="text-sm text-gray-600 line-clamp-2 mt-2">
+                    <p className="text-text-secondary line-clamp-2 mt-3">
                       {course.description}
                     </p>
                   )}
                 </div>
-                <div className="flex space-x-1 ml-4">
+                <div className="flex space-x-2 ml-4">
                   <Link
                     to={`/courses/${course.id}`}
                     className="btn btn-secondary btn-sm"
@@ -168,7 +187,7 @@ const CourseList = () => {
                   </Link>
                   <Link
                     to={`/courses/${course.id}/edit`}
-                    className="btn btn-secondary btn-sm"
+                    className="btn btn-accent btn-sm"
                     title="Edit Course"
                   >
                     <Edit className="h-4 w-4" />
@@ -195,44 +214,44 @@ const CourseList = () => {
                 </div>
               </div>
 
-              <div className="space-y-3">
+              <div className="space-y-4">
                 {course.credits && (
-                  <div className="flex items-center text-sm text-gray-600">
-                    <Clock className="h-4 w-4 mr-3 text-gray-400" />
+                  <div className="flex items-center text-text-secondary">
+                    <Clock className="h-4 w-4 mr-3 text-accent" />
                     <span>{course.credits} credits</span>
                   </div>
                 )}
                 
                 {course.instructor && (
-                  <div className="flex items-center text-sm text-gray-600">
-                    <GraduationCap className="h-4 w-4 mr-3 text-gray-400" />
+                  <div className="flex items-center text-text-secondary">
+                    <GraduationCap className="h-4 w-4 mr-3 text-primary" />
                     <span className="truncate">{course.instructor}</span>
                   </div>
                 )}
 
-                <div className="flex items-center text-sm text-gray-600">
-                  <Users className="h-4 w-4 mr-3 text-gray-400" />
+                <div className="flex items-center text-text-secondary">
+                  <Users className="h-4 w-4 mr-3 text-secondary" />
                   <span>{getEnrollmentCount(course)} students enrolled</span>
                   {getEnrollmentCount(course) > 0 && (
-                    <span className="ml-2 px-2 py-1 bg-amber-100 text-amber-800 text-xs rounded-full">
+                    <span className="ml-2 badge badge-warning">
                       Protected
                     </span>
                   )}
                 </div>
               </div>
 
-              <div className="mt-4 pt-4 border-t border-gray-200">
+              <div className="mt-6 pt-4 border-t border-gray-600">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <Hash className="h-4 w-4 text-gray-400" />
-                    <span className="text-sm text-gray-600">Status:</span>
+                    <Hash className="h-4 w-4 text-text-muted" />
+                    <span className="text-sm text-text-secondary font-medium">Status:</span>
                   </div>
-                  <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                  <span className={`badge ${
                     course.status === 'ACTIVE' 
-                      ? 'bg-green-100 text-green-800' 
-                      : 'bg-gray-100 text-gray-800'
+                      ? 'badge-success'
+                      : 'badge-warning'
                   }`}>
-                    {course.status === 'ACTIVE' ? 'Active' : 'Inactive'}
+                    {course.status || 'ACTIVE'}
                   </span>
                 </div>
               </div>
@@ -242,14 +261,14 @@ const CourseList = () => {
       </div>
 
       {filteredCourses.length === 0 && (
-        <div className="text-center py-12">
-          <div className="text-gray-400 mb-4">
-            <BookOpen className="h-12 w-12 mx-auto" />
+        <div className="text-center py-16 animate-fade-in-up">
+          <div className="text-text-muted mb-6">
+            <BookOpen className="h-16 w-16 mx-auto" />
           </div>
-          <h3 className="text-lg font-medium text-gray-900 mb-2">
+          <h3 className="text-2xl font-bold text-text-primary mb-3">
             {searchTerm ? 'No courses found' : 'No courses yet'}
           </h3>
-          <p className="text-gray-600 mb-4">
+          <p className="text-text-secondary mb-6 text-lg">
             {searchTerm 
               ? 'Try adjusting your search terms'
               : 'Get started by adding your first course'
