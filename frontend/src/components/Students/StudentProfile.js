@@ -92,25 +92,26 @@ const StudentProfile = () => {
     return student.enrollments?.filter(enr => enr.status === 'ENROLLED').length || 0;
   };
 
+
   return (
-    <div className="space-y-10 p-6">
+    <div className="space-y-10 max-w-4xl mx-auto p-6 animate-fade-in-up">
       {/* Header with Back Button */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between animate-fade-in-up">
         <div className="flex items-center space-x-6">
           <button
             onClick={() => navigate(-1)}
-            className="btn btn-secondary btn-sm hover:shadow-lg transition-all duration-200 px-4 py-2"
+            className="btn btn-secondary btn-sm"
           >
             <ArrowLeft className="h-4 w-4" />
             Back
           </button>
           <div>
-            <h1 className="text-4xl font-bold text-gray-900">Student Profile</h1>
-            <p className="mt-3 text-gray-600 text-lg">View student information and enrolled courses</p>
+            <h1 className="text-4xl font-bold gradient-text mb-2">Student Profile</h1>
+            <p className="text-text-secondary text-lg">View student information and enrolled courses</p>
           </div>
         </div>
-        <div className="flex items-center space-x-3">
-          <button className="btn btn-secondary btn-sm hover:shadow-lg transition-all duration-200 px-4 py-2">
+        <div className="flex items-center space-x-3 mt-4 sm:mt-0">
+          <button className="btn btn-secondary btn-sm">
             <Edit className="h-4 w-4" />
             Edit
           </button>
@@ -118,10 +119,11 @@ const StudentProfile = () => {
       </div>
 
       {/* Student Information Card */}
-      <div className="card hover:shadow-xl transition-all duration-300 p-8">
-        <div className="flex items-start space-x-8">
+      <div className="card glass-light hover-lift transition-all duration-300 p-8 relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-br from-emerald-100/40 to-teal-100/20 pointer-events-none rounded-3xl" />
+        <div className="flex items-start space-x-8 relative z-10">
           <div className="flex-shrink-0">
-            <div className="h-28 w-28 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-xl">
+            <div className="h-28 w-28 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-xl border-4 border-white">
               <User className="h-14 w-14 text-white" />
             </div>
           </div>
@@ -130,26 +132,59 @@ const StudentProfile = () => {
               <h2 className="text-4xl font-bold text-gray-900">
                 {student.firstName} {student.lastName}
               </h2>
-              <span className="px-4 py-2 bg-emerald-100 text-emerald-800 text-sm font-semibold rounded-full border border-emerald-200">
+              <span className="px-4 py-2 bg-emerald-100 text-emerald-800 text-sm font-semibold rounded-full border border-emerald-200 shadow-sm">
                 Active Student
               </span>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <div className="flex items-center space-x-4 p-4 bg-slate-50 rounded-xl border border-slate-200">
-                <Mail className="h-6 w-6 text-slate-500" />
+              <div className="flex items-center space-x-4 p-4 bg-white/80 rounded-xl border border-slate-200 shadow-sm">
+                <Mail className="h-6 w-6 text-emerald-400" />
                 <span className="text-gray-700 font-medium">{student.email}</span>
               </div>
-              <div className="flex items-center space-x-4 p-4 bg-slate-50 rounded-xl border border-slate-200">
-                <Phone className="h-6 w-6 text-slate-500" />
+              <div className="flex items-center space-x-4 p-4 bg-white/80 rounded-xl border border-slate-200 shadow-sm">
+                <Phone className="h-6 w-6 text-emerald-400" />
                 <span className="text-gray-700 font-medium">{student.phoneNumber}</span>
               </div>
-              <div className="flex items-center space-x-4 p-4 bg-slate-50 rounded-xl border border-slate-200">
-                <GraduationCap className="h-6 w-6 text-slate-500" />
-                <span className="text-gray-700 font-medium">ID: {student.studentId}</span>
+              <div className="flex items-center space-x-4 p-4 bg-white/80 rounded-xl border border-slate-200 shadow-sm">
+                <GraduationCap className="h-6 w-6 text-emerald-400" />
+                <span className="text-blue-600 font-bold">ID: {student.studentId}</span>
               </div>
             </div>
           </div>
         </div>
+      </div>
+
+      {/* Divider */}
+      <div className="flex items-center my-6">
+        <div className="flex-grow border-t border-emerald-200" />
+        <span className="mx-4 text-emerald-400 font-semibold tracking-wide uppercase text-xs">Overview</span>
+        <div className="flex-grow border-t border-emerald-200" />
+      </div>
+
+      {/* Quick Stats */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 animate-fade-in-up">
+        <div className="card glass-light hover-lift p-6 flex flex-col items-center text-center">
+          <BookOpen className="h-8 w-8 text-emerald-500 mb-2" />
+          <span className="text-2xl font-bold text-gray-900">{student.enrollments?.length || 0}</span>
+          <span className="text-sm text-text-secondary mt-1">Total Courses</span>
+        </div>
+        <div className="card glass-light hover-lift p-6 flex flex-col items-center text-center">
+          <Award className="h-8 w-8 text-emerald-500 mb-2" />
+          <span className="text-2xl font-bold text-gray-900">{getCompletedCourses()}</span>
+          <span className="text-sm text-text-secondary mt-1">Completed</span>
+        </div>
+        <div className="card glass-light hover-lift p-6 flex flex-col items-center text-center">
+          <Star className="h-8 w-8 text-emerald-500 mb-2" />
+          <span className="text-2xl font-bold text-gray-900">{calculateAverageGrade()}%</span>
+          <span className="text-sm text-text-secondary mt-1">Average Grade</span>
+        </div>
+      </div>
+
+      {/* Divider */}
+      <div className="flex items-center my-6">
+        <div className="flex-grow border-t border-emerald-200" />
+        <span className="mx-4 text-emerald-400 font-semibold tracking-wide uppercase text-xs">Courses</span>
+        <div className="flex-grow border-t border-emerald-200" />
       </div>
 
       {/* Stats Cards */}
@@ -184,15 +219,15 @@ const StudentProfile = () => {
       </div> */}
 
       {/* Enrolled Courses */}
-      <div className="card p-8">
+      <div className="card glass-light hover-lift p-8 animate-fade-in-up">
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center space-x-4">
             <div className="p-3 bg-indigo-500 rounded-xl shadow-lg">
               <BookOpen className="h-8 w-8 text-white" />
             </div>
             <div>
-              <h3 className="text-2xl font-bold text-gray-900">Enrolled Courses</h3>
-              <p className="text-gray-600 mt-1">Manage and view course progress</p>
+              <h3 className="text-2xl font-bold gradient-text">Enrolled Courses</h3>
+              <p className="text-text-secondary mt-1">Manage and view course progress</p>
             </div>
           </div>
           <div className="flex items-center space-x-3">
@@ -208,63 +243,69 @@ const StudentProfile = () => {
             {student.enrollments.map((enrollment) => (
               <div
                 key={enrollment.courseId}
-                className="border border-gray-200 rounded-2xl p-8 hover:border-indigo-300 hover:shadow-xl transition-all duration-300 cursor-pointer bg-white group"
+                className="card glass-light hover-lift border-2 border-emerald-400 rounded-2xl p-8 cursor-pointer group animate-fade-in-up transition-transform duration-200 hover:scale-[1.03] hover:shadow-emerald-300/60 hover:shadow-2xl relative overflow-hidden bg-gradient-to-br from-white via-emerald-50 to-white"
                 onClick={() => navigate(`/courses/${enrollment.courseId}`)}
               >
-                <div className="flex items-start justify-between mb-6">
+                <div className="absolute inset-0 bg-gradient-to-br from-emerald-50/60 to-white/0 pointer-events-none rounded-2xl z-0" />
+                <div className="flex items-start justify-between mb-6 relative z-10">
                   <div className="flex items-center space-x-4">
-                    <div className="h-12 w-12 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg">
+                    <div className="h-12 w-12 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-lg border-2 border-white">
                       <BookOpen className="h-6 w-6 text-white" />
                     </div>
                     <div>
-                      <h4 className="font-bold text-gray-900 text-lg group-hover:text-indigo-600 transition-colors">
+                      <h4 className="font-extrabold text-emerald-700 text-xl group-hover:text-emerald-600 transition-colors drop-shadow-sm">
                         {enrollment.courseName}
                       </h4>
-                      <p className="text-gray-500 font-medium">
+                      <p className="text-blue-600 font-bold text-xs mt-1">
                         {enrollment.courseCode}
                       </p>
                     </div>
                   </div>
-                  <ExternalLink className="h-5 w-5 text-gray-400 group-hover:text-indigo-500 transition-colors" />
+                  <ExternalLink className="h-5 w-5 text-gray-300 group-hover:text-emerald-500 transition-colors" />
                 </div>
-                
-                <div className="space-y-4">
+
+                <div className="space-y-4 relative z-10">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
-                      <Calendar className="h-5 w-5 text-gray-400" />
-                      <span className="text-gray-600 font-medium">
+                      <Calendar className="h-5 w-5 text-emerald-300" />
+                      <span className="text-gray-600 font-medium text-sm">
                         {new Date(enrollment.enrollmentDate).toLocaleDateString()}
                       </span>
                     </div>
-                    <span className={`px-4 py-2 rounded-full text-sm font-semibold ${
-                      enrollment.status === 'ENROLLED' ? 'bg-blue-100 text-blue-800 border border-blue-200' :
-                      enrollment.status === 'COMPLETED' ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' :
-                      'bg-gray-100 text-gray-800 border border-gray-200'
+                    <span className={`px-3 py-1 rounded-full text-xs font-bold shadow-md border-2 ${
+                      enrollment.status === 'ENROLLED' ? 'bg-blue-50 text-blue-700 border-blue-200' :
+                      enrollment.status === 'COMPLETED' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' :
+                      'bg-gray-50 text-gray-700 border-gray-200'
                     }`}>
                       {enrollment.status}
                     </span>
                   </div>
-                  
-                  <div className="flex items-center justify-between">
+
+                  <div className="flex items-center justify-between mt-2">
                     <div className="flex items-center space-x-3">
                       {enrollment.grade !== null ? (
                         <>
-                          <div className={`p-3 rounded-full ${getGradeBackground(enrollment.grade)} border border-gray-200`}>
+                          <div className={`p-2 rounded-full ${getGradeBackground(enrollment.grade)} border border-gray-200`}>
                             <Star className={`h-5 w-5 ${getGradeColor(enrollment.grade)}`} />
                           </div>
-                          <span className={`font-bold text-lg ${getGradeColor(enrollment.grade)}`}>
+                          <span className={`font-bold text-base ${getGradeColor(enrollment.grade)}`}>
                             {enrollment.grade}%
                           </span>
                         </>
                       ) : (
-                        <div className="flex items-center space-x-3">
-                          <Clock className="h-5 w-5 text-gray-400" />
-                          <span className="text-gray-400 font-medium">No grade yet</span>
+                        <div className="flex items-center space-x-2">
+                          <Clock className="h-5 w-5 text-gray-300" />
+                          <span className="text-gray-400 font-semibold text-sm">No grade yet</span>
                         </div>
                       )}
                     </div>
-                    <Award className="h-5 w-5 text-gray-400" />
+                    <Award className="h-5 w-5 text-emerald-300" />
                   </div>
+                </div>
+                <div className="absolute top-4 right-4">
+                  {enrollment.status === 'COMPLETED' && (
+                    <span className="inline-block bg-emerald-100 text-emerald-700 text-xs font-semibold px-3 py-1 rounded-full shadow-sm border border-emerald-200">Completed</span>
+                  )}
                 </div>
               </div>
             ))}
