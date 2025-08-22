@@ -130,44 +130,7 @@ SPRING_DATASOURCE_PASSWORD=university_password
 - `DELETE /api/enrollments/{id}` - Delete enrollment
 
 
-### Useful Docker Commands
 
-```bash
-# Start all services
-docker-compose up
-
-# Start in background
-docker-compose up -d
-
-# Stop all services
-docker-compose down
-
-# View logs
-docker-compose logs
-
-# View logs for specific service
-docker-compose logs backend
-docker-compose logs mysql
-
-# Rebuild and start
-docker-compose up --build
-
-# Remove volumes (will delete database data)
-docker-compose down -v
-```
-
-### Database Management
-
-```bash
-# Connect to MySQL container
-docker exec -it university-mysql mysql -u university_user -p
-
-# Backup database
-docker exec university-mysql mysqldump -u university_user -p university_db > backup.sql
-
-# Restore database
-docker exec -i university-mysql mysql -u university_user -p university_db < backup.sql
-```
 
 ## Project Structure
 
@@ -196,27 +159,4 @@ university-course-management-system/
 2. **Database connection**: Wait for MySQL to fully start before the backend tries to connect
 3. **Permission issues**: Ensure Docker has proper permissions to create volumes
 
-### Logs and Debugging
-
-```bash
-# Check if containers are running
-docker ps
-
-# Check container logs
-docker-compose logs
-
-# Access MySQL directly
-docker exec -it university-mysql mysql -u university_user -p university_db
-
-# Check application logs
-docker-compose logs backend
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
 
