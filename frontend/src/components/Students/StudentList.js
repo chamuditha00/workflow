@@ -152,7 +152,7 @@ const StudentList = () => {
                   <span className="truncate">{student.email}</span>
                 </div>
                 {student.phoneNumber && (
-                  <div className="flex items-center text-sm text-gray-600">
+                  <div className="flex items-center text-sm text-text-secondary">
                     <Phone className="h-4 w-4 mr-3 text-gray-400" />
                     <span>{student.phoneNumber}</span>
                   </div>
@@ -162,12 +162,9 @@ const StudentList = () => {
               <div className="mt-4 pt-4 border-t border-gray-200">
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <GraduationCap className="h-4 w-4 text-gray-400" />
-                    <span className="text-sm text-gray-600">Enrollments:</span>
+                    <GraduationCap className="h-4 w-4 text-text-secondary" />
+                    <span className="text-sm text-text-secondary">Enrollments: {student.enrollments?.length || 0}</span>
                   </div>
-                  <span className="text-sm font-medium text-gray-900 bg-gray-100 px-2 py-1 rounded-full">
-                    {student.enrollments?.length || 0}
-                  </span>
                 </div>
               </div>
             </div>
