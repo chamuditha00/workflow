@@ -129,7 +129,6 @@ SPRING_DATASOURCE_PASSWORD=university_password
 - `PUT /api/enrollments/{id}` - Update enrollment
 - `DELETE /api/enrollments/{id}` - Delete enrollment
 
-## Docker Commands
 
 ### Useful Docker Commands
 
@@ -221,6 +220,3 @@ docker-compose logs backend
 4. Test thoroughly
 5. Submit a pull request
 
-## License
-
-This project is licensed under the MIT License. 
