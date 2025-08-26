@@ -19,6 +19,15 @@ COPY src src
 # Build the application
 RUN ./mvnw clean package -DskipTests
 
+# Create a new layer with the built JAR
+FROM openjdk:17-jdk-slim
+WORKDIR /app
+COPY --from=0 /app/target/*.jar app.jar
+
+# Run the application
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
+
 # Create a non-root user
 RUN addgroup --system javauser && adduser --system --ingroup javauser javauser
 

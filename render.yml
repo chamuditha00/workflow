@@ -1,0 +1,70 @@
+
+      - key: SPRING_DATASOURCE_URL
+        value: jdbc:mysql://university-cms-mysql:3306/university_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      - key: SPRING_DATASOURCE_USERNAME
+        value: university_user
+      - key: SPRING_DATASOURCE_PASSWORD
+        fromService:
+          name: university-cms-mysql
+          type: pserv
+          envVarKey: MYSQL_PASSWORDt + Spring Boot + MySQL
+
+
+services:
+  # --- MySQL Database ---
+  - type: pserv
+    name: university-cms-mysql
+    env: docker
+    plan: free
+    dockerfilePath: ./mysql/Dockerfile
+    disk:
+      name: data
+      mountPath: /var/lib/mysql
+      sizeGB: 10
+    envVars:
+      - key: MYSQL_DATABASE
+        value: university_db
+      - key: MYSQL_USER
+        value: university_user
+      - key: MYSQL_PASSWORD
+        sync: false
+      - key: MYSQL_ROOT_PASSWORD
+        sync: false
+
+  # --- Backend: Spring Boot ---
+  - type: web
+    name: university-cms-backend
+    env: docker
+    plan: free
+    rootDir: backend
+    dockerfilePath: Dockerfile
+    autoDeploy: true
+    envVars:
+      # Fill these in the Render dashboard 
+      - key: SPRING_DATASOURCE_URL
+        sync: false
+      - key: SPRING_DATASOURCE_USERNAME
+        sync: false
+      - key: SPRING_DATASOURCE_PASSWORD
+        sync: false
+      # Allow your deployed frontend origin (update the URL after frontend deploys)
+      - key: CORS_ALLOWED_ORIGINS
+        value: https://university-cms-frontend.onrender.com
+
+  # --- Frontend: React (Static Site) ---
+  - type: static
+    name: university-cms-frontend
+    plan: free
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: build
+    envVars:
+      # This is read at build time by CRA/Vite. After the backend is live,
+      # update this to the backend's URL.
+      - key: REACT_APP_API_BASE
+        value: https://university-cms-backend.onrender.com
+    routes:
+      # SPA fallback so client-side routing works
+      - type: rewrite
+        source: /*
+        destination: /index.html
