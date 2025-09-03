@@ -21,4 +21,13 @@ export const enrollStudent = (studentId, courseId) =>
 export const updateGrade = (enrollmentId, grade) =>
   api.put(`/enrollments/${enrollmentId}/grade`, { grade });
 
-export default api; 
+export const login = (email, password) =>
+  api.post('/users/login', { email, password });
+
+export const setupPassword = (email, password) =>
+  api.post('/users/setup-password', { email, password });
+
+export const register = (email, password) =>
+  api.post('/users/register', { email, password });
+
+export default api;

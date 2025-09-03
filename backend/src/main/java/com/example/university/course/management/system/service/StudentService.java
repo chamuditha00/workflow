@@ -8,6 +8,7 @@ import com.example.university.course.management.system.entity.Student;
 import com.example.university.course.management.system.repository.CourseRepository;
 import com.example.university.course.management.system.repository.EnrollmentRepository;
 import com.example.university.course.management.system.repository.StudentRepository;
+import com.example.university.course.management.system.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,17 +27,18 @@ public class StudentService {
     
     @Autowired
     private EnrollmentRepository enrollmentRepository;
+
+    @Autowired
+    private UserRepository userRepository;
     
     // Create a new student
     public StudentDTO createStudent(StudentDTO studentDTO) {
         if (studentRepository.existsByEmail(studentDTO.getEmail())) {
             throw new RuntimeException("Student with email " + studentDTO.getEmail() + " already exists");
         }
-        
         if (studentRepository.existsByStudentId(studentDTO.getStudentId())) {
             throw new RuntimeException("Student with ID " + studentDTO.getStudentId() + " already exists");
         }
-        
         Student student = new Student(
             studentDTO.getFirstName(),
             studentDTO.getLastName(),
@@ -44,8 +46,18 @@ public class StudentService {
             studentDTO.getPhoneNumber(),
             studentDTO.getStudentId()
         );
-        
         Student savedStudent = studentRepository.save(student);
+        // Also create a User entity for login
+        if (!userRepository.findByEmail(studentDTO.getEmail()).isPresent()) {
+            com.example.university.course.management.system.entity.User user =
+                new com.example.university.course.management.system.entity.User(
+                    studentDTO.getEmail(),
+                    studentDTO.getStudentId(), // Use studentId as temporary password
+                    "student"
+                );
+            // User will be marked as firstLogin=true by default for students
+            userRepository.save(user);
+        }
         return convertToDTO(savedStudent);
     }
     
@@ -180,4 +192,4 @@ public class StudentService {
             enrollment.getComments()
         );
     }
-} 
+}
